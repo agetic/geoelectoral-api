@@ -3,8 +3,9 @@ extends layout
 block content
   h3 URLs para el API en formato JSON o CSV
   ul
-    li
-      a(href='/api/anio/2009.json') Elecciones 2009 en JSON
-    li
-      a(href='/api/anio/2009.csv') Elecciones 2009 en CSV
-
+    each anio, index in anios
+      li
+        a(href="/api/anio/#{anio.ano}.json") Elecciones #{anio.ano} en JSON
+      li
+        a(href="/api/anio/#{anio.ano}.csv") Elecciones #{anio.ano} en CSV
+      p

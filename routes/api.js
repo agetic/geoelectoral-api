@@ -24,29 +24,34 @@ var csv_header = [
 
 connectionString = 'postgres://postgres:postgres@localhost:5432/geoelectoral';
 
-client = new pg.Client(connectionString);
-client.connect();
+/* GET /api/anio */
+router.get('/anio', function(req, res) {
+  client = new pg.Client(connectionString);
+  client.on('drain', client.end.bind(client)); //disconnect client when all queries are finished
+  client.connect();
+
+  if (req.params.format === undefined) {
+    query = "SELECT DISTINCT ano FROM public.elecciones ORDER BY ano";
+    query = client.query(query, function(err, result) {
+      if (err) {
+        return console.error('Error ejecutando consulta', err);
+      }
+      res.render('api', {anios: result.rows});
+    });
+    return;
+  }
+});
 
 /* GET /api/anio/:anio.:format. */
 router.get('/anio/:anio.:format?', function(req, res) {
-  if (req.params.format === undefined) {
-    res.render('api');
-    return;
-  }
+  client = new pg.Client(connectionString);
+  client.on('drain', client.end.bind(client)); //disconnect client when all queries are finished
+  client.connect();
 
   var rows = [];
-  var params = [];
 
-  params.push(req.params.anio);
-  params.push('votos');
-  params.push(1);
-  params.push(2);
-  params.push(1);
-  params.push(83);
-  params.push(83);
-
-  query = "SELECT * FROM ws_elecciones($1, $2, $3, $4, $5, $6, $7)";
-  query = client.query(query, params);
+  query = "SELECT * FROM ws_elecciones_por_anio($1)";
+  query = client.query(query, [req.params.anio]);
 
   query.on('row', function(result) {
     rows.push(result);
