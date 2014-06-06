@@ -1,0 +1,18 @@
+table
+  thead
+    tr
+      th Código
+      th Nombre
+      th Año
+      th Sigla
+      th Nº Votos
+      th Porcentaje
+  tbody
+    - for eleccion in elecciones
+      tr
+        td= eleccion.dpa_codigo
+        td= eleccion.dpa_nombre
+        td= eleccion.anio
+        td= eleccion.sigla
+        td= eleccion.resultado
+        td #{eleccion.porcentaje}%

@@ -1,11 +1,12 @@
 extends layout
 
 block content
-  h3 URLs para el API en formato JSON o CSV
   ul
     each anio, index in anios
       li
-        a(href="/api/anio/#{anio.ano}.json") Elecciones #{anio.ano} en JSON
+        a(href="/api/v1/elecciones?anio=#{anio.ano}&formato=json") Elecciones #{anio.ano} en JSON
       li
-        a(href="/api/anio/#{anio.ano}.csv") Elecciones #{anio.ano} en CSV
+        a(href="/api/v1/elecciones?anio=#{anio.ano}&formato=csv") Elecciones #{anio.ano} en CSV
+      li
+        a(href="/api/v1/elecciones?anio=#{anio.ano}&formato=html") Elecciones #{anio.ano} en HTML
       p
