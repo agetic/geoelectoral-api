@@ -1,0 +1,32 @@
+default:
+  port: 3000
+  db:
+    user: 'postgres'
+    password: 'postgres'
+    database: 'geoelectoral'
+    host: 'localhost'
+    port: 5432
+
+development:
+  port: 3000
+  db:
+    user: 'postgres'
+    password: 'postgres'
+    database: 'geoelectoral'
+    host: 'localhost'
+    port: 5432
+
+test:
+  port: 3001
+
+staging:
+  <<: *production
+
+production: &production
+  port: 3000
+  db:
+    user: 'postgres'
+    password: 'postgres'
+    database: 'geoelectoral'
+    host: 'localhost'
+    port: 5432
