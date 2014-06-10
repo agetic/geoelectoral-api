@@ -47,7 +47,11 @@ BEGIN
       (dpa.codigo || '' '' || partidos.sigla)::VARCHAR AS codigo_sigla,
       resultados.resultado,
       resultados.id_eleccion,
-      ROUND(100.0 * resultado/(sum(resultado) OVER (PARTITION BY resultados.id_dpa, jerarquia_partidos.distancia)), 2)::REAL AS porcentaje
+      (CASE WHEN (SUM(resultado) OVER (PARTITION BY resultados.id_dpa, jerarquia_partidos.distancia)) <> 0 THEN
+        ROUND(100.0 * resultado/(SUM(resultado) OVER (PARTITION BY resultados.id_dpa, jerarquia_partidos.distancia)), 2)
+      ELSE
+        0.0
+      END)::REAL AS porcentaje
     FROM
       public.resultados,
       public.elecciones,
