@@ -30,7 +30,7 @@ var sql_params = {
   'id_partido': '_id_partido'
 };
 
-exports.api = function(req, res) {
+var api = function(req, res) {
 
   // Parsing URL
   var parsing_url = function(req, res) {
@@ -156,3 +156,5 @@ exports.api = function(req, res) {
       break;
   };
 };
+
+exports.api = api;
