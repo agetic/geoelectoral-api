@@ -1,5 +1,5 @@
 var express = require('express');
-var elecciones = require('../lib/elecciones');
+var elecciones = require('../controllers/elecciones');
 
 var router = express.Router();
 

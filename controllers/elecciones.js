@@ -1,5 +1,6 @@
 var json2csv = require('json2csv');
 var config = require('konfig')();
+var utils = require('../lib/utils');
 var pg = require('pg')
   , client
   , query;
@@ -71,7 +72,7 @@ exports.api = function(req, res) {
         res.json({"error": "Error en los parámetros"});
       } else {
         console.log("Respuesta en formato JSON");
-        res.json(result.rows);
+        res.json(utils.eleccion_dpas_json(result.rows));
       }
     });
   };
