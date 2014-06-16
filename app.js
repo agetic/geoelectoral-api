@@ -14,7 +14,7 @@ var app = express();
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 
-app.locals.pretty = true;
+app.enable('trust proxy');
 
 app.use(favicon());
 app.use(logger('dev'));
@@ -39,6 +39,7 @@ app.use(function(req, res, next) {
 // development error handler
 // will print stacktrace
 if (app.get('env') === 'development') {
+    app.locals.pretty = true;
     app.use(function(err, req, res, next) {
         res.status(err.status || 500);
         res.render('error', {

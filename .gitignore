@@ -1,4 +1,4 @@
 /node_modules
 /tmp/*
 /config/app.yml
-/log/*
+/log/*.log

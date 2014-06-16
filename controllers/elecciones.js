@@ -30,6 +30,7 @@ var sql_params = {
   'id_partido': '_id_partido'
 };
 
+/* GET /elecciones?anio=2009&formato=json */
 var api = function(req, res) {
 
   // Parsing URL
@@ -97,6 +98,7 @@ var api = function(req, res) {
   // La respuesta en formato HTML
   var respuesta_html = function(req, res) {
     consulta_sql(req, res, function(req, res, err, result) {
+      //res.set('content-type', 'text/html; charset=UTF-8');
       if (err) {
         res.send("Error en los parámetros");
       } else {
@@ -157,4 +159,30 @@ var api = function(req, res) {
   };
 };
 
+/* GET /elecciones/:anio/info */
+var info = function(req, res) {
+  // Información de las elecciones por año
+  var informacion_json = function(req, res) {
+    client = new pg.Client(config.app.db);
+    client.on('drain', client.end.bind(client)); //disconnect client when all queries are finished
+    client.connect();
+
+    query = "SELECT DISTINCT ano FROM public.elecciones ORDER BY ano";
+    query = client.query(query, function(err, result) {
+      res.set('content-type', 'application/json; charset=UTF-8');
+      if (err) {
+        console.error("Error ejecutando consulta: ", err);
+        res.json({"error": "Error en los parámetros"});
+      } else {
+        console.log("Elecciones info respuesta en formato JSON");
+        res.json(utils.elecciones_info_json(result.rows));
+      }
+    });
+  }
+
+  // Enviar información de elecciones en formato JSON
+  informacion_json(req, res);
+};
+
 exports.api = api;
+exports.info = info;
