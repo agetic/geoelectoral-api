@@ -5,7 +5,7 @@ NPM_PATH=/home/emendoza/.nvm/v0.10.29
 
 # El sistema se ejecutará en entorno de producción y en el puerto 3000
 NODE_ENV=production
-PORT=4000
+PORT=3000
 LOG_PATH=log/$NODE_ENV.$PORT.log
 
 PATH=$NPM_PATH/bin:$PATH
