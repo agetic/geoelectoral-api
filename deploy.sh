@@ -12,7 +12,7 @@ PATH=$NPM_PATH/bin:$PATH
 export PATH NPM_PATH NODE_ENV PORT LOG_PATH
 
 # Directorio donde está ubicado el sistema
-SOURCE_API=/home/freddy/dev/nodejs/geoelectoral
+SOURCE_API=/var/www/geoelectoral-api
 
 if [ -d $SOURCE_API ]; then
   echo "El sistema se ejecutará en '$NODE_ENV' en el puerto $PORT"
