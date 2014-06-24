@@ -1,0 +1,26 @@
+style.
+  body {
+    background-color: #f5f5f5;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-size: 12px;
+  }
+
+  .svg-chart .background {
+    shape-rendering: crispEdges;
+    stroke: #ccc;
+    fill: #fdfdfd;
+    stroke-width: 1px;
+  }
+
+  .svg-chart .bar { fill: #4682B4; }
+
+- var opciones = {}
+- opciones.data = elecciones
+- opciones.width = 800
+- opciones.height = 300
+- opciones.containerId = 'grafica-barras'
+- opciones.xAxisLabel = 'Partidos'
+- opciones.yAxisLabel = 'Votos'
+- opciones.containerId = 'bar-chart-large'
+
+!= graficaBarrasHelper.getGraficaBarras(opciones)

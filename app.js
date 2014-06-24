@@ -7,6 +7,7 @@ var bodyParser = require('body-parser');
 
 var routes = require('./routes/index');
 var api = require('./routes/api');
+var grafica = require('./routes/grafica');
 
 var app = express();
 
@@ -21,11 +22,19 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded());
 app.use(cookieParser());
-app.use(require('stylus').middleware(path.join(__dirname, 'public')));
+app.use(require('stylus').middleware({
+  src: path.join(__dirname, 'public'),
+  compress: true
+}));
 app.use(express.static(path.join(__dirname, 'public')));
+
+/// helpers
+app.locals.graficaBarrasHelper = require('./lib/grafica_barras_helper');
+//app.locals.graficaTortaHelper = require('./lib/grafica_torta_helper')
 
 app.use('/', routes);
 app.use('/api/v1', api);
+app.use('/grafica', grafica);
 
 /// catch 404 and forward to error handler
 app.use(function(req, res, next) {

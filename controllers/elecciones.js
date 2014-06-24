@@ -104,8 +104,9 @@ var api = function(req, res) {
       } else {
         console.log("Respuesta en formato HTML");
         var resultado = req.query.tipo_resultado || 'votos';
+        var tipo_grafico = req.query.tipo_grafico || 'tabla';
         resultado = resultado.charAt(0).toUpperCase() + resultado.slice(1);
-        res.render('elecciones/tabla', {elecciones: result.rows, resultado: resultado});
+        res.render('elecciones/' + tipo_grafico, {elecciones: result.rows, resultado: resultado});
       }
     });
   };
