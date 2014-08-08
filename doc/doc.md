@@ -13,131 +13,129 @@ GET /api/v1/elecciones
 ## Parámetros
 
 <table>
-  <tbody>
-    <tr>
-      <th>Parámetro</th>
-      <th>Descripción</th>
-      <th>Por defecto</th>
-    </tr>
-    <tr>
-      <td>`formato`</td>
-      <td>
-      	Establece el formato de salida por ejemplo `HTML`, `JSON`, o `CSV`
-        <ul>
-          <li>El formato también se puede establecer en la cabecera de la petición `Accept`: `text/html`, `application/json`, o `application/csv`</li>
-          <li>El de mayor prioridad es el parámetro `formato` de la URL.</li>
-        </ul>
-        <strong>Opcional:</strong>
-        <ul>
-          <li>`formato=[cadena]`</li>
-          <li>ejemplo: formato=JSON</li>
-        </ul>
-      </td>
-      <td>
-      	HTML
-      </td>
-    </tr>
-    <tr>
-      <td>`anio`</td>
-      <td>
-      	Establece el año de la elección desde 1979 hasta 2009
-        <ul>
-          <li>El formato también se puede establecer en la cabecera de la petición `Accept`: `text/html`, `application/json`, o `application/csv`</li>
-          <li>El de mayor prioridad es el parámetro `formato` de la URL.</li>
-        </ul>
-        <strong>Requerido:</strong> En el caso que no esté definido el parámetro `id_eleccion`, caso contrario es un parámetro <em>Opcional</em>
-        <ul>
-          <li>`anio=[entero]`</li>
-          <li>ejemplo: anio=1979</li>
-        </ul>
-      </td>
-      <td>El año de la última elección</td>
-    </tr>
-    <tr>
-      <td>`id_eleccion`</td>
-      <td>
-        ID de las elecciones plurinominales, uninominales, o especiales, en base al año de la elección <br/>
-        <strong>Requerido:</strong> En el caso que no esté definido el parámetro `anio`, caso contrario es un parámetro <em>Opcional</em>
-        <ul>
-          <li>`id_eleccion=[entero]`</li>
-          <li>ejemplo: id_eleccion=14</li>
-        </ul>
-      </td>
-      <td>La elección para presidente o plurinominales</td>
-    </tr>
-    <tr>
-      <td>`id_dpa`</td>
-      <td>
-        ID de la división político administrativa: Bolivia, La Paz, Oruro, Potosí,... <br/>
-        <strong>Opcional:</strong>
-        <ul>
-          <li>`id_dpa=[entero]`</li>
-          <li>ejemplo: id_dpa=1</li>
-        </ul>
-      </td>
-      <td>El ID de Bolivia que es 1</td>
-    </tr>
-    <tr>
-      <td>`id_tipo_dpa`</td>
-      <td>
-        ID del tipo de división político administrativa: país, departamento, provincia, municipio, circunscripción<br/>
-        <strong>Opcional:</strong>
-        <ul>
-          <li>`id_tipo_dpa=[entero]`</li>
-          <li>ejemplo: id_tipo_dpa=2</li>
-        </ul>
-      </td>
-      <td>A nivel país que es 1</td>
-    </tr>
-    <tr>
-      <td>`id_partido_grupo`</td>
-      <td>
-        ID del partido antecesor de tipo grupo: válidos, emitidos, e inscritos<br/>
-        <strong>Opcional:</strong>
-        <ul>
-          <li>`id_partido_grupo=[entero]`</li>
-          <li>ejemplo: id_partido_grupo=83</li>
-        </ul>
-      </td>
-      <td>ID del grupo VALIDOS que es 83</td>
-    </tr>
-    <tr>
-      <td>`id_partido`</td>
-      <td>
-        ID del partido político de tipo normal<br/>
-        <strong>Opcional:</strong>
-        <ul>
-          <li>`id_partido=[entero]`</li>
-          <li>ejemplo: id_partido=83</li>
-        </ul>
-      </td>
-      <td>ID del partido VALIDOS que es 83</td>
-    </tr>
-    <tr>
-      <td>`tipo_resultado`</td>
-      <td>
-        Los tipos de resultado pueden ser votos, diputados, senadores, o constituyentes<br/>
-        <strong>Opcional:</strong>
-        <ul>
-          <li>`tipo_resultado=[cadena]`</li>
-          <li>ejemplo: tipo_resultado=votos</li>
-        </ul>
-      </td>
-      <td>votos</td>
-    </tr>
-    <tr>
-      <td>`tipo_grafico`</td>
-      <td>
-        El tipo de gráfico que se va a mostrar: tabla, barras, torta, mapa, etc<br/>
-        <strong>Opcional:</strong>
-        <ul>
-          <li>`tipo_grafico=[cadena]`</li>
-          <li>ejemplo: tipo_grafico=barras</li>
-        </ul>
-      </td>
-      <td>tabla</td>
-    </tr>
-  </tbody>
+  <tr>
+    <th>Parámetro</th>
+    <th>Descripción</th>
+    <th>Por defecto</th>
+  </tr>
+  <tr>
+    <td>`formato`</td>
+    <td>
+      Establece el formato de salida por ejemplo `HTML`, `JSON`, o `CSV`
+      <ul>
+        <li>El formato también se puede establecer en la cabecera de la petición `Accept`: `text/html`, `application/json`, o `application/csv`</li>
+        <li>El de mayor prioridad es el parámetro `formato` de la URL, porque cuando se consulte al API desde un navegador el valor que envía el navegador en la cabecera `Accept` es `text/html`, por tanto ignoraría el parámetro `formato`, es por eso que primero se verifica los parámetros que se envían en la URL y en segunda se verifica las cabeceras de la petición.</li>
+      </ul>
+      <strong>Opcional:</strong>
+      <ul>
+        <li>`formato=[cadena]`</li>
+        <li>ejemplo: formato=JSON</li>
+      </ul>
+    </td>
+    <td>
+      HTML
+    </td>
+  </tr>
+  <tr>
+    <td>`anio`</td>
+    <td>
+      Establece el año de la elección desde 1979 hasta 2009
+      <ul>
+        <li>El formato también se puede establecer en la cabecera de la petición `Accept`: `text/html`, `application/json`, o `application/csv`</li>
+        <li>El de mayor prioridad es el parámetro `formato` de la URL.</li>
+      </ul>
+      <strong>Requerido:</strong> En el caso que no esté definido el parámetro `id_eleccion`, caso contrario es un parámetro <em>Opcional</em>
+      <ul>
+        <li>`anio=[entero]`</li>
+        <li>ejemplo: anio=1979</li>
+      </ul>
+    </td>
+    <td>El año de la última elección</td>
+  </tr>
+  <tr>
+    <td>`id_eleccion`</td>
+    <td>
+      ID de las elecciones plurinominales, uninominales, o especiales, en base al año de la elección <br/>
+      <strong>Requerido:</strong> En el caso que no esté definido el parámetro `anio`, caso contrario es un parámetro <em>Opcional</em>
+      <ul>
+        <li>`id_eleccion=[entero]`</li>
+        <li>ejemplo: id_eleccion=14</li>
+      </ul>
+    </td>
+    <td>La elección para presidente o plurinominales</td>
+  </tr>
+  <tr>
+    <td>`id_dpa`</td>
+    <td>
+      ID de la división político administrativa: Bolivia, La Paz, Oruro, Potosí,... <br/>
+      <strong>Opcional:</strong>
+      <ul>
+        <li>`id_dpa=[entero]`</li>
+        <li>ejemplo: id_dpa=1</li>
+      </ul>
+    </td>
+    <td>El ID de Bolivia que es 1</td>
+  </tr>
+  <tr>
+    <td>`id_tipo_dpa`</td>
+    <td>
+      ID del tipo de división político administrativa: país, departamento, provincia, municipio, circunscripción<br/>
+      <strong>Opcional:</strong>
+      <ul>
+        <li>`id_tipo_dpa=[entero]`</li>
+        <li>ejemplo: id_tipo_dpa=2</li>
+      </ul>
+    </td>
+    <td>A nivel país que es 1</td>
+  </tr>
+  <tr>
+    <td>`id_partido_grupo`</td>
+    <td>
+      ID del partido antecesor de tipo grupo: válidos, emitidos, e inscritos<br/>
+      <strong>Opcional:</strong>
+      <ul>
+        <li>`id_partido_grupo=[entero]`</li>
+        <li>ejemplo: id_partido_grupo=83</li>
+      </ul>
+    </td>
+    <td>ID del grupo VALIDOS que es 83</td>
+  </tr>
+  <tr>
+    <td>`id_partido`</td>
+    <td>
+      ID del partido político de tipo normal<br/>
+      <strong>Opcional:</strong>
+      <ul>
+        <li>`id_partido=[entero]`</li>
+        <li>ejemplo: id_partido=83</li>
+      </ul>
+    </td>
+    <td>ID del partido VALIDOS que es 83</td>
+  </tr>
+  <tr>
+    <td>`tipo_resultado`</td>
+    <td>
+      Los tipos de resultado pueden ser votos, diputados, senadores, o constituyentes<br/>
+      <strong>Opcional:</strong>
+      <ul>
+        <li>`tipo_resultado=[cadena]`</li>
+        <li>ejemplo: tipo_resultado=votos</li>
+      </ul>
+    </td>
+    <td>votos</td>
+  </tr>
+  <tr>
+    <td>`tipo_grafico`</td>
+    <td>
+      El tipo de gráfico que se va a mostrar: tabla, barras, torta, mapa, etc<br/>
+      <strong>Opcional:</strong>
+      <ul>
+        <li>`tipo_grafico=[cadena]`</li>
+        <li>ejemplo: tipo_grafico=barras</li>
+      </ul>
+    </td>
+    <td>tabla</td>
+  </tr>
 </table>
 
 ## Ejemplos
@@ -258,7 +256,7 @@ Las columnas describen lo siguiente:
 
 El formato JSON será devuelto en la siguiente estructura (Sitio web de referencia [json:api](http://jsonapi.org/))
 
-```json
+```javascript
 {
   eleccion: {
     id_eleccion: 1,
@@ -270,24 +268,57 @@ El formato JSON será devuelto en la siguiente estructura (Sitio web de referenc
       id_dpa: 2,
       dpa_codigo: "02",
       dpa_nombre: "La Paz",
-      partidos: [
+      tipos_partidos: [
         {
-          id_partido: 18,
-          id_tipo_partido: 1,
-          sigla: "AS",
-          resultado: 21185,
-          porcentaje: 1.55
-        },
-        {
-          id_partido: 1,
-          id_tipo_partido: 1,
-          sigla: "BSD",
-          resultado: 3017,
-          porcentaje: 0.22
+          id_partido: 83,
+          sigla: "VALIDOS",
+          nombre: "los votos validos (todos los partidos politicos)",
+          partidos: [
+            {
+              id_partido: 18,
+              id_tipo_partido: 1,
+              sigla: "AS",
+              resultado: 21185,
+              porcentaje: 1.55
+            }, {
+              ...
+            }
+            ...
+          ]
+        }, {
+          id_partido: 84,
+          sigla: "EMITIDOS",
+          nombre: "los votos emitidos, es decir votos blancos y nulos tambien",
+          partidos: [ ... ]
+        }, {
+          id_partido: 85,
+          sigla: "INSCRITOS",
+          nombre: "total de electores inscritos, es decir abstencion y votos anulados tambien",
+          partidos: [ ... ]
         },
         ...
       ]
-    }
+    }, {
+      id_dpa: 3,
+      dpa_codigo: "03",
+      dpa_nombre: "Cochabamba",
+      tipos_partidos: [
+        {
+          id_partido: 83,
+          ...
+          partidos: [ ... ]
+        }, {
+          id_partido: 84,
+          ...
+          partidos: [ ... ]
+        }, {
+          id_partido: 85,
+          ...
+          partidos: [ ... ]
+        }
+      ]
+    },
+    ...
   ]
 }
 ```
