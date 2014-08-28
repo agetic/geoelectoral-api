@@ -26,6 +26,12 @@ app.use(require('stylus').middleware({
   src: path.join(__dirname, 'public'),
   compress: true
 }));
+// Enable CORS for express: http://stackoverflow.com/a/11182153/1174245
+app.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "X-Requested-With");
+  next();
+});
 app.use(express.static(path.join(__dirname, 'public')));
 
 /// helpers
