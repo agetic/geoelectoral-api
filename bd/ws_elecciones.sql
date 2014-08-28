@@ -25,7 +25,7 @@ CREATE OR REPLACE FUNCTION ws_elecciones(
   )
   RETURNS
   TABLE(id_dpa INT, dpa_codigo VARCHAR,  dpa_nombre VARCHAR, anio INT, nombre_tipo_resultado VARCHAR, id_partido INT, id_tipo_partido INT,
-        sigla VARCHAR, codigo_sigla VARCHAR, resultado INT, id_eleccion INT, porcentaje REAL) AS
+        sigla VARCHAR, color CHAR(6), codigo_sigla VARCHAR, resultado INT, id_eleccion INT, porcentaje REAL) AS
 $func$
 BEGIN
 
@@ -44,6 +44,7 @@ BEGIN
       resultados.id_partido,
       resultados.id_tipo_partido,
       partidos.sigla,
+      partidos.color1,
       (dpa.codigo || '' '' || partidos.sigla)::VARCHAR AS codigo_sigla,
       resultados.resultado,
       resultados.id_eleccion,
