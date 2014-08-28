@@ -355,3 +355,109 @@ El Frontend que hará usó del API REST tendrá una interfaz gráfica web será 
 | Framework Web          | Ruby On Rails / HTML, CSS, javascript |
 | Visualización de mapas | D3.js con GeoJSON                     |
 | Gráficos de resultados | D3.js                                 |
+
+## Consultas sobre el API REST
+
+### Listado de elecciones
+
+URL de la petición:
+
+```url
+GET /api/v1/elecciones
+```
+
+Resultado:
+
+* Listado de todas las elecciones desde 1979 hasta 2009
+
+```
+| Año  | URL                          |
+|------|------------------------------|
+| 2009 | /api/v1/elecciones?anio=2009 |
+| 2006 | /api/v1/elecciones?anio=2006 |
+| 2005 | /api/v1/elecciones?anio=2005 |
+| 2002 | /api/v1/elecciones?anio=2002 |
+| 1997 | /api/v1/elecciones?anio=1997 |
+| 1993 | /api/v1/elecciones?anio=1993 |
+| 1989 | /api/v1/elecciones?anio=1989 |
+| 1985 | /api/v1/elecciones?anio=1985 |
+| 1980 | /api/v1/elecciones?anio=1980 |
+| 1979 | /api/v1/elecciones?anio=1979 |
+```
+
+### Elecciones del año 2009
+
+URL de la petición:
+
+```url
+GET /api/v1/elecciones?anio=2009
+```
+
+Resultado:
+
+* Muestra las tres elecciones de ese año
+
+```
+| id_eleccion | descripcion                      | URL                                         |
+|-------------|----------------------------------|---------------------------------------------|
+| 1           | 2009 - elecciones plurinominales | /api/v1/elecciones?anio=2009&id_eleccion=1  |
+| 10          | 2009 - elecciones uninominales   | /api/v1/elecciones?anio=2009&id_eleccion=10 |
+| 14          | 2009 - elecciones especiales     | /api/v1/elecciones?anio=2009&id_eleccion=14 |
+```
+
+### Elecciones plurinominales del año 2009
+
+URL de la petición:
+
+```url
+GET /api/v1/elecciones?anio=2009&id_eleccion=1
+GET /api/v1/elecciones?id_eleccion=1
+```
+> Nota: Cualquiera de éstas dos URLs debería retornar los mismos resultados
+
+Resultado:
+
+* Resultados de votos de los partidos a nivel Bolivia (nivel País)
+* También se debe poder seleccionar: País, Departamento, Provincia, Municipio, Circunscripción
+* También por tipo de resultado: votos, diputados, senadores, constituyentes
+
+```
+| id_partido | sigla  | resultado | URL                                            |
+|------------|--------|-----------|------------------------------------------------|
+| 18         | AS     | 104952    | /api/v1/elecciones?id_eleccion=1&id_partido=18 |
+| 1          | BSD    | 9709      | /api/v1/elecciones?id_eleccion=1&id_partido=1  |
+| 2          | GENTE  | 15388     | /api/v1/elecciones?id_eleccion=1&id_partido=2  |
+| 25         | MAS    | 2851996   | /api/v1/elecciones?id_eleccion=1&id_partido=25 |
+| 3          | MUSPA  | 21829     | /api/v1/elecciones?id_eleccion=1&id_partido=3  |
+| 27         | PPB-CN | 1190603   | /api/v1/elecciones?id_eleccion=1&id_partido=27 |
+| 4          | PULSO  | 12635     | /api/v1/elecciones?id_eleccion=1&id_partido=4  |
+| 16         | UN     | 255299    | /api/v1/elecciones?id_eleccion=1&id_partido=16 |
+```
+
+### Elecciones plurinominales del 2009 del partido MAS
+
+URL de la petición:
+
+```url
+GET /api/v1/elecciones?id_eleccion=1&id_partido=25
+```
+Resultado:
+
+* Resultados de votos del partido MAS a nivel Bolivia (nivel País)
+* También se debe poder seleccionar: País, Departamento, Provincia, Municipio, Circunscripción
+* También por tipo de resultado: votos, diputados, senadores, constituyentes
+
+```
+| id_partido | sigla  | resultado | URL                                            |
+|------------|--------|-----------|------------------------------------------------|
+| 18         | AS     | 104952    | /api/v1/elecciones?id_eleccion=1&id_partido=18 |
+| 1          | BSD    | 9709      | /api/v1/elecciones?id_eleccion=1&id_partido=1  |
+| 2          | GENTE  | 15388     | /api/v1/elecciones?id_eleccion=1&id_partido=2  |
+| 25         | MAS    | 2851996   | /api/v1/elecciones?id_eleccion=1&id_partido=25 |
+| 3          | MUSPA  | 21829     | /api/v1/elecciones?id_eleccion=1&id_partido=3  |
+| 27         | PPB-CN | 1190603   | /api/v1/elecciones?id_eleccion=1&id_partido=27 |
+| 4          | PULSO  | 12635     | /api/v1/elecciones?id_eleccion=1&id_partido=4  |
+| 16         | UN     | 255299    | /api/v1/elecciones?id_eleccion=1&id_partido=16 |
+```
+
+
