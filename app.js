@@ -40,7 +40,7 @@ app.locals.graficaBarrasHelper = require('./lib/grafica_barras_helper');
 
 app.use('/', routes);
 app.use('/api/v1', api);
-app.use('/grafica', grafica);
+//app.use('/grafica', grafica);
 
 /// catch 404 and forward to error handler
 app.use(function(req, res, next) {

@@ -4,6 +4,9 @@ var proxy = require('../controllers/proxy');
 
 var router = express.Router();
 
+/* GET /api/v1/anios */
+router.get('/anios', elecciones.anios);
+
 /* GET /api/v1/elecciones */
 router.get('/elecciones', elecciones.api);
 
@@ -20,6 +23,5 @@ router.get('/proxy', proxy.dpa);
 /* GET /api/v1/departamentos/:id_departamento/circunscripciones */
 
 /* GET /api/v1/provincias/:id_provincia/municipios */
-
 
 module.exports = router;
