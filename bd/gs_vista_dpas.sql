@@ -14,6 +14,13 @@ SELECT
   dpa.codigo,
   dpa.codigo_parcial,
   dpa.codigo_ine,
-  dpa.seccion
+  dpa.seccion,
+  jerarquia_dpa.id_dpa_antecesor,
+  jerarquia_dpa.distancia,
+  jerarquia_dpa.id_tipo_dpa_antecesor
 FROM
+  public.jerarquia_dpa,
   public.dpa
+WHERE
+  jerarquia_dpa.id_dpa_descendiente = dpa.id_dpa AND
+  jerarquia_dpa.id_tipo_dpa_descendiente = dpa.id_tipo_dpa
