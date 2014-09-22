@@ -14,6 +14,9 @@
 -- Ejemplo:
 --   SELECT * FROM ws_elecciones(2009, 'votos', 2, 3, 1, 83, 83)
 --
+-- Eliminar función:
+--   DROP FUNCTION ws_elecciones(_anio INT, _nombre_tipo_resultado VARCHAR,_id_dpa INT, _id_tipo_dpa INT, _id_eleccion INT,_id_partido_antecesor INT,_id_partido INT)
+--
 CREATE OR REPLACE FUNCTION ws_elecciones(
     _anio INT                      DEFAULT 2009,    -- Desde 1979 hasta 2009
     _nombre_tipo_resultado VARCHAR DEFAULT 'votos', -- votos, diputados, senadores, constituyentes
@@ -25,7 +28,7 @@ CREATE OR REPLACE FUNCTION ws_elecciones(
   )
   RETURNS
   TABLE(id_dpa INT, dpa_codigo VARCHAR,  dpa_nombre VARCHAR, anio INT, nombre_tipo_resultado VARCHAR, id_partido INT, id_tipo_partido INT,
-        sigla VARCHAR, color CHAR(6), codigo_sigla VARCHAR, resultado INT, id_eleccion INT, porcentaje REAL) AS
+        sigla VARCHAR, color CHAR(6), partido_nombre VARCHAR, codigo_sigla VARCHAR, resultado INT, id_eleccion INT, porcentaje REAL) AS
 $func$
 BEGIN
 
@@ -45,6 +48,7 @@ BEGIN
       resultados.id_tipo_partido,
       partidos.sigla,
       partidos.color1,
+      partidos.nombre AS partido_nombre,
       (dpa.codigo || '' '' || partidos.sigla)::VARCHAR AS codigo_sigla,
       resultados.resultado,
       resultados.id_eleccion,
