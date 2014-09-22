@@ -1,0 +1,19 @@
+SELECT
+  dpa.id_dpa,
+  dpa.id_tipo_dpa,
+  dpa.nombre,
+  dpa.id_dpa_superior,
+  ST_Simplify(dpa.the_geom, 0.025) as the_geom,
+  dpa.extent,
+  dpa.area_km2,
+  dpa.id_dpa_madre,
+  dpa.fecha_creacion_oficial,
+  dpa.fecha_supresion_oficial,
+  dpa.fecha_creacion_corte,
+  dpa.fecha_supresion_corte,
+  dpa.codigo,
+  dpa.codigo_parcial,
+  dpa.codigo_ine,
+  dpa.seccion
+FROM
+  public.dpa
