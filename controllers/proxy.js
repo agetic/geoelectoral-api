@@ -7,7 +7,10 @@ var http = require('http');
  */
 var dpa = function(req, res) {
 
-  var cql_filter = 'id_dpa_antecesor=1+AND+id_tipo_dpa=2';
+  var cql_filter = 'id_dpa_antecesor={idDpa}+AND+id_tipo_dpa={idTipoDpa}';
+  cql_filter = cql_filter.replace(/{idDpa}/g, req.query.idDpa);
+  cql_filter = cql_filter.replace(/{idTipoDpa}/g, req.query.idTipoDpa);
+
   var options = {
     host: 'geo.gob.bo',
     port: 80,
