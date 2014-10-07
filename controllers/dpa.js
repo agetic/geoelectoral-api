@@ -16,7 +16,7 @@ var dpa = function(req, res) {
     client.on('drain', client.end.bind(client)); //disconnect client when all queries are finished
     client.connect();
 
-    query = "SELECT id_dpa, id_tipo_dpa, nombre ";
+    query = "SELECT id_dpa, id_tipo_dpa, nombre, id_dpa_superior ";
     query += "FROM dpa ";
     query += "ORDER BY id_dpa ASC";
     query = client.query(query, function(err, result) {
