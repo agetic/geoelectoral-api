@@ -27,7 +27,7 @@ CREATE OR REPLACE FUNCTION ws_elecciones(
     _id_partido INT                DEFAULT 83       -- VALIDOS
   )
   RETURNS
-  TABLE(id_dpa INT, dpa_codigo VARCHAR,  dpa_nombre VARCHAR, anio INT, nombre_tipo_resultado VARCHAR, id_partido INT, id_tipo_partido INT,
+  TABLE(id_dpa INT, dpa_codigo VARCHAR, dpa_nombre VARCHAR, id_dpa_superior INT, anio INT, nombre_tipo_resultado VARCHAR, id_partido INT, id_tipo_partido INT,
         sigla VARCHAR, color CHAR(6), partido_nombre VARCHAR, codigo_sigla VARCHAR, resultado INT, id_eleccion INT, porcentaje REAL) AS
 $func$
 BEGIN
@@ -42,6 +42,7 @@ BEGIN
       resultados.id_dpa,
       dpa.codigo,
       dpa.nombre,
+      dpa.id_dpa_superior,
       elecciones.ano,
       tipos_resultado_eleccion_dpa.nombre_tipo_resultado,
       resultados.id_partido,
