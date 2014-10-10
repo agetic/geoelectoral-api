@@ -67,6 +67,7 @@ Nota: Si los procedimientos almacenados existen eliminarlos y volverlos a instal
 Configuramos la base de datos en el archivo `config/app.yml` en la sección de `production`:
 
 ```
+$ cp config/app.yml.sample config/app.yml
 $ nano config/app.yml
 ```
 ```
