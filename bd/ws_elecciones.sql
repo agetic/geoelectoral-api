@@ -28,7 +28,7 @@ CREATE OR REPLACE FUNCTION ws_elecciones(
   )
   RETURNS
   TABLE(id_dpa INT, dpa_codigo VARCHAR, dpa_nombre VARCHAR, id_dpa_superior INT, anio INT, nombre_tipo_resultado VARCHAR, id_partido INT, id_tipo_partido INT,
-        sigla VARCHAR, color CHAR(6), partido_nombre VARCHAR, codigo_sigla VARCHAR, resultado INT, observacion VARCHAR, id_eleccion INT, porcentaje REAL) AS
+        sigla VARCHAR, color CHAR(6), partido_nombre VARCHAR, codigo_sigla VARCHAR, resultado INT, observacion TEXT, id_eleccion INT, porcentaje REAL) AS
 $func$
 BEGIN
 
