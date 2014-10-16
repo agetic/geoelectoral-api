@@ -12,10 +12,10 @@
 --   * _id_partido: Id del partido político normal
 --
 -- Ejemplo:
---   SELECT * FROM ws_elecciones(2009, 'votos', 2, 3, 1, 83, 83)
+--   SELECT * FROM ws_elecciones(2009, 'votos', 1, 2, null, 1, 83, 83)
 --
 -- Eliminar función:
---   DROP FUNCTION ws_elecciones(_anio INT, _nombre_tipo_resultado VARCHAR,_id_dpa INT, _id_tipo_dpa INT, _id_eleccion INT,_id_partido_antecesor INT,_id_partido INT)
+--   DROP FUNCTION ws_elecciones(_anio INT, _nombre_tipo_resultado VARCHAR,_id_dpa INT, _id_tipo_dpa INT, _id_eleccion INT, _id_tipo_eleccion INT, _id_partido_antecesor INT,_id_partido INT)
 --
 CREATE OR REPLACE FUNCTION ws_elecciones(
     _anio INT                      DEFAULT 2009,    -- Desde 1979 hasta 2009
@@ -23,18 +23,19 @@ CREATE OR REPLACE FUNCTION ws_elecciones(
     _id_dpa INT                    DEFAULT 1,       -- Bolivia
     _id_tipo_dpa INT               DEFAULT 1,       -- pais
     _id_eleccion INT               DEFAULT NULL,    -- Depende del parámetro 'anio'
+    _id_tipo_eleccion INT          DEFAULT 1,       -- Depende del parámetro 'anio'
     _id_partido_antecesor INT      DEFAULT 83,      -- VALIDOS
     _id_partido INT                DEFAULT 83       -- VALIDOS
   )
   RETURNS
   TABLE(id_dpa INT, dpa_codigo VARCHAR, dpa_nombre VARCHAR, id_dpa_superior INT, anio INT, nombre_tipo_resultado VARCHAR, id_partido INT, id_tipo_partido INT,
-        sigla VARCHAR, color CHAR(6), partido_nombre VARCHAR, codigo_sigla VARCHAR, resultado INT, observacion TEXT, id_eleccion INT, porcentaje REAL) AS
+        sigla VARCHAR, color CHAR(6), partido_nombre VARCHAR, codigo_sigla VARCHAR, resultado INT, observacion TEXT, id_eleccion INT, id_tipo_eleccion INT, porcentaje REAL) AS
 $func$
 BEGIN
 
   IF _id_eleccion IS NULL THEN
-    EXECUTE 'SELECT id_eleccion FROM elecciones WHERE ano=$1 ORDER BY id_eleccion LIMIT 1'
-    USING _anio INTO _id_eleccion;
+    EXECUTE 'SELECT id_eleccion FROM elecciones WHERE ano=$1 AND id_tipo_eleccion=$2 ORDER BY id_eleccion LIMIT 1'
+    USING _anio, _id_tipo_eleccion INTO _id_eleccion;
   END IF;
 
   RETURN QUERY EXECUTE format('
@@ -54,6 +55,7 @@ BEGIN
       resultados.resultado,
       resultados.observacion,
       resultados.id_eleccion,
+      elecciones.id_tipo_eleccion,
       (CASE WHEN (SUM(resultado) OVER (PARTITION BY resultados.id_dpa, jerarquia_partidos.distancia)) <> 0 THEN
         ROUND(100.0 * resultado/(SUM(resultado) OVER (PARTITION BY resultados.id_dpa, jerarquia_partidos.distancia)), 2)
       ELSE

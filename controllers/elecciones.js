@@ -26,6 +26,7 @@ var sql_params = {
   'id_dpa': '_id_dpa',
   'id_tipo_dpa': '_id_tipo_dpa',
   'id_eleccion': '_id_eleccion',
+  'id_tipo_eleccion': '_id_tipo_eleccion',
   'id_partido_grupo': '_id_partido_antecesor',
   'id_partido': '_id_partido'
 };
