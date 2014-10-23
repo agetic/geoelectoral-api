@@ -1,3 +1,4 @@
+var config = require('konfig')();
 var http = require('http');
 
 /**
@@ -12,7 +13,8 @@ var dpa = function(req, res) {
   cql_filter = cql_filter.replace(/{idTipoDpa}/g, req.query.idTipoDpa);
 
   var generarOpcion = function(idTipoDpa, cql_filter) {
-    var path = '/geoserver/geoelectoral/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=geoelectoral:{geoelectoralCapa}&maxFeatures=5000&outputFormat=json&cql_filter=' + cql_filter;
+    var path = '/geoserver/{namespace}/ows?service=WFS&version=1.0.0&request=GetFeature&typeName={namespace}:{geoelectoralCapa}&maxFeatures=5000&outputFormat=json&cql_filter=' + cql_filter;
+    path = path.replace(/{namespace}/g, config.app.geoserver.namespace);
     if (idTipoDpa == 2) {
       path = path.replace(/{geoelectoralCapa}/g, 'geoelectoral-provincia');
     } else if (idTipoDpa == 3 || idTipoDpa == 5) {
@@ -23,8 +25,8 @@ var dpa = function(req, res) {
       path = path.replace(/{geoelectoralCapa}/g, 'geoelectoral-departamento');
     }
     return {
-      host: 'geo.gob.bo',
-      port: 80,
+      host: config.app.geoserver.host,
+      port: config.app.geoserver.port,
       path: path,
       method: 'GET'
     };

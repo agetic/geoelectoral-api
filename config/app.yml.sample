@@ -6,6 +6,10 @@ default:
     database: 'geoelectoral'
     host: 'localhost'
     port: 5432
+  geoserver:
+    host: 'geo.gob.bo'
+    port: 80
+    namespace: 'geoelectoral'
 
 development:
   port: 3000
@@ -15,6 +19,10 @@ development:
     database: 'geoelectoral'
     host: 'localhost'
     port: 5432
+  geoserver:
+    host: 'test.geo.gob.bo'
+    port: 80
+    namespace: 'geoelectoral'
 
 test:
   port: 3001

@@ -80,7 +80,13 @@ production:
     database: 'geoelectoral'
     host: 'localhost'
     port: 5432
+  geoserver:
+    host: 'geo.gob.bo'
+    port: 80
+    namespace: 'geoelectoral'
 ```
+
+También se puede modificar la configuración de GeoServer indicando el servidor y el espacio de nombres.
 
 ## Apache
 
