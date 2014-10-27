@@ -7,23 +7,25 @@
 -- Ejemplo:
 --   SELECT * FROM ws_anios_elecciones()
 --
+-- Eliminar función:
+--   DROP FUNCTION ws_anios_elecciones()
+--
 CREATE OR REPLACE FUNCTION ws_anios_elecciones()
   RETURNS
-  TABLE(anio INT) AS
+  TABLE(id_eleccion INT, id_tipo_dpa INT, id_tipo_eleccion INT, anio INT, descripcion TEXT) AS
 $func$
 BEGIN
   RETURN QUERY EXECUTE format('
-    SELECT
-      elecciones.ano
-    FROM
-      public.elecciones,
-      public.tipos_eleccion
-    WHERE
-      tipos_eleccion.id_tipo_eleccion = elecciones.id_tipo_eleccion AND
-      tipos_eleccion.id_tipo_eleccion = $1
-    ORDER BY
-      elecciones.ano ASC;')
-  USING 1;
+    SELECT e.id_eleccion, r.id_tipo_dpa, e.id_tipo_eleccion, e.ano, e.descripcion
+    FROM elecciones e INNER JOIN (SELECT id_eleccion, id_tipo_dpa, COUNT(*) c
+                                  FROM resultados
+                                  WHERE id_tipo_resultado=$1 -- votos
+                                  GROUP BY id_eleccion, id_tipo_dpa
+                                  ORDER BY c DESC) r
+    ON e.id_eleccion=r.id_eleccion
+    WHERE e.id_tipo_eleccion IN (1, 2)
+    ORDER BY e.ano, e.id_eleccion, r.id_tipo_dpa;'
+  ) USING 1;
 
 END
 $func$ LANGUAGE plpgsql;
