@@ -23,7 +23,7 @@ BEGIN
                                   GROUP BY id_eleccion, id_tipo_dpa
                                   ORDER BY c DESC) r
     ON e.id_eleccion=r.id_eleccion
-    WHERE e.id_tipo_eleccion IN (1, 2)
+    WHERE e.id_tipo_eleccion IN (1, 2, 6, 7)
     ORDER BY e.ano, e.id_eleccion, r.id_tipo_dpa;'
   ) USING 1;
 
