@@ -1,5 +1,6 @@
 var config = require('konfig')();
 var http = require('http');
+var lzString = require('lz-string');
 
 /**
  * Proxy para obtener geoJSON de los servicios de GeoBolivia
@@ -45,7 +46,8 @@ var dpa = function(req, res) {
       if (body.indexOf('<?xml') !== -1) {
         res.json({error: "Error en el servidor de mapas"});
       } else {
-        res.json(JSON.parse(body));
+        res.json({lz:lzString.compressToEncodedURIComponent(body)});
+        //res.json(JSON.parse(body));
       }
     });
   });
