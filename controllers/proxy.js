@@ -12,18 +12,19 @@ var dpa = function(req, res) {
   var cql_filter = 'id_dpa_antecesor={idDpa}+AND+id_tipo_dpa={idTipoDpa}';
   cql_filter = cql_filter.replace(/{idDpa}/g, req.query.idDpa);
   cql_filter = cql_filter.replace(/{idTipoDpa}/g, req.query.idTipoDpa);
+  var lzs = (req.query.lz==1)?'lz':'';
 
   var generarOpcion = function(idTipoDpa, cql_filter) {
     var path = '/geoserver/{namespace}/ows?service=WFS&version=1.0.0&request=GetFeature&typeName={namespace}:{geoelectoralCapa}&maxFeatures=5000&outputFormat=json&cql_filter=' + cql_filter;
     path = path.replace(/{namespace}/g, config.app.geoserver.namespace);
     if (idTipoDpa == 2) {
-      path = path.replace(/{geoelectoralCapa}/g, 'geoelectoral-provincia');
+      path = path.replace(/{geoelectoralCapa}/g, 'geoelectoral-provincia'+lzs);
     } else if (idTipoDpa == 3 || idTipoDpa == 5) {
-      path = path.replace(/{geoelectoralCapa}/g, 'geoelectoral-municipio');
+      path = path.replace(/{geoelectoralCapa}/g, 'geoelectoral-municipio'+lzs);
     } else if (idTipoDpa == 4) {
-      path = path.replace(/{geoelectoralCapa}/g, 'geoelectoral-municipio');
+      path = path.replace(/{geoelectoralCapa}/g, 'geoelectoral-municipio'+lzs);
     } else {
-      path = path.replace(/{geoelectoralCapa}/g, 'geoelectoral-departamento');
+      path = path.replace(/{geoelectoralCapa}/g, 'geoelectoral-departamento'+lzs);
     }
     return {
       host: config.app.geoserver.host,
@@ -46,8 +47,10 @@ var dpa = function(req, res) {
       if (body.indexOf('<?xml') !== -1) {
         res.json({error: "Error en el servidor de mapas"});
       } else {
-        res.json({lz:lzString.compressToEncodedURIComponent(body)});
-        //res.json(JSON.parse(body));
+        if(lzs) // enviar comprimido
+          res.json({lz:lzString.compressToEncodedURIComponent(body)});
+        else
+          res.json(JSON.parse(body));
       }
     });
   });

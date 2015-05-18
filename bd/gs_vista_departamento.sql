@@ -6,7 +6,7 @@ SELECT
   dpa.id_tipo_dpa,
   dpa.nombre,
   dpa.id_dpa_superior,
-  ST_Simplify(dpa.the_geom, 0.0065) as the_geom,
+  ST_Simplify(dpa.the_geom, 0.0375) as the_geom,
   dpa.extent,
   dpa.area_km2,
   dpa.id_dpa_madre,
