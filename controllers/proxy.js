@@ -17,16 +17,17 @@ var dpa = function(req, res) {
   var generarOpcion = function(idTipoDpa, cql_filter) {
     var path = '/geoserver/{namespace}/ows?service=WFS&version=1.0.0&request=GetFeature&typeName={namespace}:{geoelectoralCapa}&maxFeatures=5000&outputFormat=json&cql_filter=' + cql_filter;
     path = path.replace(/{namespace}/g, config.app.geoserver.namespace);
-    if (idTipoDpa == 2) {
+    if(path.indexOf('id_tipo_dpa=6')>=0){
+      path = path.replace(/{geoelectoralCapa}/g, 'geoelectoral-recinto');
+      path = path.replace('id_tipo_dpa=6','(id_tipo_dpa='+idTipoDpa+'+OR+id_tipo_dpa=6)');
+    } else if (idTipoDpa == 2) {
       path = path.replace(/{geoelectoralCapa}/g, 'geoelectoral-provincia'+lzs);
     } else if (idTipoDpa == 3 || idTipoDpa == 5) {
       path = path.replace(/{geoelectoralCapa}/g, 'geoelectoral-municipio'+lzs);
     } else if (idTipoDpa == 4 && lzs) { // para mostrar recintos sobre mapa
       path = path.replace(/{geoelectoralCapa}/g, 'geoelectoral-recinto');
-      path = path.replace('id_tipo_dpa=4','(id_tipo_dpa=4+OR+id_tipo_dpa=6)');
     } else if (idTipoDpa == 6 && lzs) { // para mostrar mesas sobre recinto
       path = path.replace(/{geoelectoralCapa}/g, 'geoelectoral-recinto');
-      path = path.replace('id_tipo_dpa=6','(id_tipo_dpa=6+OR+id_tipo_dpa=7)');
     } else if (idTipoDpa == 4) { // se mantiene por compatibilidad para geoelectoral v1
       path = path.replace(/{geoelectoralCapa}/g, 'geoelectoral-municipio'+lzs);
     } else {
