@@ -18,6 +18,12 @@ var dpa = function(req, res) {
 
     query = "SELECT id_dpa, id_tipo_dpa, nombre, id_dpa_superior ";
     query += "FROM dpa ";
+    if(req.query.fecha){
+      query += "WHERE '"+req.query.fecha+"' BETWEEN fecha_creacion_corte AND fecha_supresion_corte ";
+      query += "  AND id_tipo_dpa<7 ";
+    }else{
+      query += "WHERE id_tipo_dpa<7 ";
+    }
     query += "ORDER BY id_dpa ASC";
     query = client.query(query, function(err, result) {
       res.set('content-type', 'application/json; charset=UTF-8');
