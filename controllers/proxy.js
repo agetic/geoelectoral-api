@@ -8,18 +8,19 @@ var lzString = require('lz-string');
  * GET /api/v1/proxy?id_tipo_dpa=2
  */
 var dpa = function(req, res) {
-  console.log('rq.query', req.query);
+  //console.log('rq.query', req.query);
   var cql_filter = 'id_dpa_antecesor={idDpa}+AND+id_tipo_dpa={idTipoDpa}';
   cql_filter = cql_filter.replace(/{idDpa}/g, req.query.idDpa);
   cql_filter = cql_filter.replace(/{idTipoDpa}/g, req.query.idTipoDpa);
   var lzs = (req.query.lz==1)?'lz':'';
+  var fecha = req.query.fecha;
 
   var generarOpcion = function(idTipoDpa, cql_filter) {
     var path = '/geoserver/{namespace}/ows?service=WFS&version=1.0.0&request=GetFeature&typeName={namespace}:{geoelectoralCapa}&maxFeatures=5000&outputFormat=json&cql_filter=' + cql_filter;
     path = path.replace(/{namespace}/g, config.app.geoserver.namespace);
     if(path.indexOf('id_tipo_dpa=6')>=0){
       path = path.replace(/{geoelectoralCapa}/g, 'geoelectoral-recinto');
-      path = path.replace('id_tipo_dpa=6','(id_tipo_dpa='+idTipoDpa+'+OR+id_tipo_dpa=6)');
+      path = path.replace('id_tipo_dpa=6','(id_tipo_dpa='+idTipoDpa+'+OR+id_tipo_dpa=6)+AND+fecha_creacion_corte<'+fecha+'+AND+'+fecha+'<fecha_supresion_corte');
     } else if (idTipoDpa == 2) {
       path = path.replace(/{geoelectoralCapa}/g, 'geoelectoral-provincia'+lzs);
     } else if (idTipoDpa == 3 || idTipoDpa == 5) {
