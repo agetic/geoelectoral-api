@@ -18,18 +18,19 @@ var dpa = function(req, res) {
   var generarOpcion = function(idTipoDpa, cql_filter) {
     var path = '/geoserver/{namespace}/ows?service=WFS&version=1.0.0&request=GetFeature&typeName={namespace}:{geoelectoralCapa}&maxFeatures=5000&outputFormat=json&cql_filter=' + cql_filter;
     path = path.replace(/{namespace}/g, config.app.geoserver.namespace);
+    console.log('ES:',idTipoDpa,path);
     if(path.indexOf('id_tipo_dpa=6')>=0){
       path = path.replace(/{geoelectoralCapa}/g, 'geoelectoral-recinto');
       path = path.replace('id_tipo_dpa=6','(id_tipo_dpa='+idTipoDpa+'+OR+id_tipo_dpa=6)+AND+fecha_creacion_corte<='+fecha+'+AND+'+fecha+'<=fecha_supresion_corte');
     } else if(path.indexOf('id_tipo_dpa=7')>=0){
       path = path.replace(/{geoelectoralCapa}/g, 'geoelectoral-recinto');
-      path = path.replace('id_tipo_dpa=7','id_tipo_dpa=6+AND+fecha_creacion_corte<='+fecha+'+AND+'+fecha+'<=fecha_supresion_corte');
+      path = path.replace('id_tipo_dpa=7','(id_tipo_dpa='+idTipoDpa+'+OR+id_tipo_dpa=6)+AND+fecha_creacion_corte<='+fecha+'+AND+'+fecha+'<=fecha_supresion_corte');
     } else if(path.indexOf('id_tipo_dpa=8')>=0){
       path = path.replace(/{geoelectoralCapa}/g, 'geoelectoral-recinto');
       path = path.replace('id_tipo_dpa=8','(id_tipo_dpa='+idTipoDpa+'+OR+id_tipo_dpa=8)+AND+fecha_creacion_corte<='+fecha+'+AND+'+fecha+'<=fecha_supresion_corte');
     } else if(path.indexOf('id_tipo_dpa=9')>=0){
       path = path.replace(/{geoelectoralCapa}/g, 'geoelectoral-recinto');
-      path = path.replace('id_tipo_dpa=9','id_tipo_dpa=8+AND+fecha_creacion_corte<='+fecha+'+AND+'+fecha+'<=fecha_supresion_corte');
+      path = path.replace('id_tipo_dpa=9','(id_tipo_dpa='+idTipoDpa+'+OR+id_tipo_dpa=8)+AND+fecha_creacion_corte<='+fecha+'+AND+'+fecha+'<=fecha_supresion_corte');
     } else if (idTipoDpa == 2) {
       path = path.replace(/{geoelectoralCapa}/g, 'geoelectoral-provincia'+lzs);
     } else if (idTipoDpa == 3 || idTipoDpa == 5) {
