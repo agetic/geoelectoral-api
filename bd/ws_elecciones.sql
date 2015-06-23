@@ -87,7 +87,8 @@ BEGIN
       tipos_resultado_eleccion_dpa.id_tipo_dpa = $2 AND
       elecciones.id_eleccion = $3 AND
       jerarquia_partidos.id_partido_antecesor = $4 AND
-      jerarquia_dpa.id_dpa_antecesor = $5
+      jerarquia_dpa.id_dpa_antecesor = $5 AND
+      partidos.id_tipo_partido IN (1,4,5)
     ORDER BY
       codigo ASC,
       nombre ASC,
