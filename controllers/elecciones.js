@@ -211,6 +211,46 @@ var anios = function(req, res) {
   informacion_json(req, res);
 };
 
+/* GET /elecciones/dpa?cod=010101&anio=2009&formato=json */
+var dpa = function(req, res) {
+  // Información de las elecciones en el dpa
+  var informacion_json = function(req, res) {
+    client = new pg.Client(config.app.db);
+    client.on('drain', client.end.bind(client)); //disconnect client when all queries are finished
+    client.connect();
+
+    query = "SELECT el.* ";
+    query+= "       ,dm.id_dpa,dm.nombre,dm.codigo,dm.seccion,dm.id_dpa_superior ";
+    query+= "       ,pa.nombre partido,pa.sigla,pa.color1 ";
+    query+= "       ,re.resultado,re.observacion ";
+    query+= "FROM elecciones el ";
+    query+= "JOIN resultados re ON re.id_eleccion=el.id_eleccion ";
+    query+= "JOIN dpa dm ON dm.id_dpa=re.id_dpa AND dm.id_tipo_dpa=re.id_tipo_dpa ";
+    query+= "JOIN partidos pa ON pa.id_partido=re.id_partido AND pa.id_tipo_partido=re.id_tipo_partido ";
+    query+= "WHERE dm.codigo='"+req.query.cod+"' ";
+    if(req.query.id_tipo_eleccion)
+      query+= "  AND el.id_tipo_eleccion="+req.query.id_tipo_eleccion+" ";
+    if(req.query.anio)
+      query+= "  AND el.ano="+req.query.anio+" ";
+    query+= "ORDER BY el.fecha, re.resultado DESC ";
+
+    query = client.query(query, function(err, result) {
+      res.set('content-type', 'application/json; charset=UTF-8');
+      if (err) {
+        console.error("Error ejecutando consulta: ", err);
+        res.json({"error": "Error en los parámetros"});
+      } else {
+        console.log("Elecciones info respuesta en formato JSON");
+        res.json( (result.rows) );
+      }
+    });
+  }
+
+  // Enviar información de elecciones en formato JSON
+  informacion_json(req, res);
+}
+
 exports.api = api;
 exports.info = info;
 exports.anios = anios;
+exports.dpa = dpa;
