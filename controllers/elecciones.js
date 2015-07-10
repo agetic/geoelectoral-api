@@ -211,6 +211,93 @@ var anios = function(req, res) {
   informacion_json(req, res);
 };
 
+var dpa_elecciones = function(rows) {
+  jsonObj = [];
+  elem = rows.shift();
+  cx=0;
+  while(elem && cx++<1000) {
+    index = null;
+    if(jsonObj.some(function(obj,i){ index=i; return(obj.id_eleccion===elem.id_eleccion);})) {
+      di = null;
+      if(jsonObj[index].dpas.some(function(d,i){di=i;return d.id_dpa===elem.id_dpa;})) {
+        jsonObj[index].dpas[di].partidos.push({
+          partido: elem.partido,
+          sigla: elem.sigla,
+          color1: elem.color1,
+          resultado: elem.resultado,
+          observacion: elem.observacion
+        });
+        elem = rows.shift();
+      } else {
+        jsonObj[index].dpas.push({
+          id_dpa: elem.id_dpa,
+          nombre: elem.nombre,
+          codigo: elem.codigo,
+          seccion: elem.seccion,
+          id_dpa_superior: elem.id_dpa_superior,
+          url_wiki: elem.url_wiki,
+          partidos: []
+        });
+      }
+    } else {
+      jsonObj.push({
+        id_eleccion: elem.id_eleccion,
+        id_tipo_eleccion: elem.id_tipo_eleccion,
+        fecha: elem.fecha,
+        id_tipo_dpa: elem.id_tipo_dpa,
+        descripcion: elem.descripcion,
+        ano: elem.ano,
+        dpas: []
+      });
+    }
+  }
+  console.log(cx,'resultados');
+  return jsonObj;
+}
+
+/* GET /elecciones/dpa?cod=010101&anio=2009&formato=json */
+var dpa = function(req, res) {
+  // Información de las elecciones en el dpa
+  var informacion_json = function(req, res) {
+    client = new pg.Client(config.app.db);
+    client.on('drain', client.end.bind(client)); //disconnect client when all queries are finished
+    client.connect();
+
+    query = "SELECT el.* ";
+    query+= "       ,dm.id_dpa,dm.nombre,dm.codigo,dm.seccion,dm.id_dpa_superior ";
+    query+= "       ,pa.nombre partido,pa.sigla,pa.color1 ";
+    query+= "       ,re.resultado,re.observacion,dm.url_wiki ";
+    query+= "FROM elecciones el ";
+    query+= "JOIN resultados re ON re.id_eleccion=el.id_eleccion ";
+    query+= "JOIN dpa dm ON dm.id_dpa=re.id_dpa AND dm.id_tipo_dpa=re.id_tipo_dpa ";
+    query+= "JOIN partidos pa ON pa.id_partido=re.id_partido AND pa.id_tipo_partido=re.id_tipo_partido ";
+    query+= "WHERE re.id_tipo_resultado=1 "
+    query+= "  AND dm.codigo='"+req.query.cod+"' ";
+    if(req.query.id_tipo_eleccion)
+      query+= "  AND el.id_tipo_eleccion="+req.query.id_tipo_eleccion+" ";
+    if(req.query.id_tipo_dpa)
+      query+= "  AND dm.id_tipo_dpa="+req.query.id_tipo_dpa+" ";
+    if(req.query.anio)
+      query+= "  AND el.ano="+req.query.anio+" ";
+    query+= "ORDER BY el.fecha, re.resultado DESC ";
+
+    query = client.query(query, function(err, result) {
+      res.set('content-type', 'application/json; charset=UTF-8');
+      if (err) {
+        console.error("Error ejecutando consulta: ", err);
+        res.json({"error": "Error en los parámetros"});
+      } else {
+        console.log("Elecciones info respuesta en formato JSON");
+        res.json( dpa_elecciones(result.rows) );
+      }
+    });
+  }
+
+  // Enviar información de elecciones en formato JSON
+  informacion_json(req, res);
+}
+
 exports.api = api;
 exports.info = info;
 exports.anios = anios;
+exports.dpa = dpa;

@@ -13,6 +13,7 @@ router.get('/elecciones', elecciones.api);
 
 /* GET /api/v1/elecciones/:anio/info */
 router.get('/elecciones/:anio/info', elecciones.info);
+router.get('/elecciones/dpa', elecciones.dpa);
 
 /* GET /api/v1/proxy?id_tipo_dpa=2 */
 router.get('/proxy', proxy.dpa);
