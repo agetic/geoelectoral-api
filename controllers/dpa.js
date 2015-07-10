@@ -18,6 +18,7 @@ var dpa = function(req, res) {
 
     query = "SELECT id_dpa, id_tipo_dpa, nombre, id_dpa_superior ";
     query += "FROM dpa ";
+    query += "WHERE id_tipo_dpa < 6 ";
     query += "ORDER BY id_dpa ASC";
     query = client.query(query, function(err, result) {
       res.set('content-type', 'application/json; charset=UTF-8');
