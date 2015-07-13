@@ -22,7 +22,7 @@ var dpa = function(req, res) {
       query += "WHERE '"+req.query.fecha+"' BETWEEN fecha_creacion_corte AND fecha_supresion_corte ";
       query += "  AND (id_tipo_dpa<=6 OR id_tipo_dpa=8) ";
     }else{
-      query += "WHERE id_tipo_dpa<6 ";
+      query += "WHERE id_tipo_dpa < 6 ";
     }
     query += "ORDER BY id_dpa ASC";
     query = client.query(query, function(err, result) {

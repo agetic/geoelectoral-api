@@ -58,6 +58,7 @@ var api = function(req, res) {
     client.connect();
 
     query = parsing_url(req, res);
+    console.log(query);
     query = client.query(query.sql, query.params, function (err, result) {
       if (err) {
         console.error("Error ejecutando consulta: ", err);
@@ -211,7 +212,7 @@ var anios = function(req, res) {
   informacion_json(req, res);
 };
 
-/* GET /elecciones/dpa?cod=010101&anio=2009&formato=json */
+/* GET /elecciones/dpa?cod=010101&anio=2009&id_tipo_eleccion=1&id_tipo_dpa=4formato=json */
 var dpa = function(req, res) {
   // Información de las elecciones en el dpa
   var informacion_json = function(req, res) {
@@ -219,17 +220,21 @@ var dpa = function(req, res) {
     client.on('drain', client.end.bind(client)); //disconnect client when all queries are finished
     client.connect();
 
+    // -> probar como funcion almacenada
     query = "SELECT el.* ";
     query+= "       ,dm.id_dpa,dm.nombre,dm.codigo,dm.seccion,dm.id_dpa_superior ";
     query+= "       ,pa.nombre partido,pa.sigla,pa.color1 ";
-    query+= "       ,re.resultado,re.observacion ";
+    query+= "       ,re.resultado,re.observacion,dm.url_wiki ";
     query+= "FROM elecciones el ";
     query+= "JOIN resultados re ON re.id_eleccion=el.id_eleccion ";
     query+= "JOIN dpa dm ON dm.id_dpa=re.id_dpa AND dm.id_tipo_dpa=re.id_tipo_dpa ";
     query+= "JOIN partidos pa ON pa.id_partido=re.id_partido AND pa.id_tipo_partido=re.id_tipo_partido ";
-    query+= "WHERE dm.codigo='"+req.query.cod+"' ";
+    query+= "WHERE re.id_tipo_resultado=1 "
+    query+= "  AND dm.codigo='"+req.query.cod+"' ";
     if(req.query.id_tipo_eleccion)
       query+= "  AND el.id_tipo_eleccion="+req.query.id_tipo_eleccion+" ";
+    if(req.query.id_tipo_dpa)
+      query+= "  AND dm.id_tipo_dpa="+req.query.id_tipo_dpa+" ";
     if(req.query.anio)
       query+= "  AND el.ano="+req.query.anio+" ";
     query+= "ORDER BY el.fecha, re.resultado DESC ";
@@ -241,7 +246,7 @@ var dpa = function(req, res) {
         res.json({"error": "Error en los parámetros"});
       } else {
         console.log("Elecciones info respuesta en formato JSON");
-        res.json( (result.rows) );
+        res.json( utils.eleccion_dpacod_json(result.rows) );
       }
     });
   }
