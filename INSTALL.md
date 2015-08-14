@@ -1,5 +1,25 @@
 # Instalación
 
+## Capas necesarias en GeoServer
+
+Crear las siguientes capas a partir de las vistas SQL.
+
+Espacio de trabajo | Almacén | Nombre de capa
+--- | --- | ---
+geoelectoral | geoelectoral | [geoelectoral-departamento](bd/gs_vista_departamento.sql)
+geoelectoral | geoelectoral | [geoelectoral-provincia](bd/gs_vista_provincia.sql)
+geoelectoral | geoelectoral | [geoelectoral-municipio](bd/gs_vista_municipio.sql)
+
+Para la version 2: Crear estas vistas.
+
+Espacio de trabajo | Almacén | Nombre de capa
+--- | --- | ---
+geoelectoral | geoelectoral | [geoelectoral-departamentolz](bd/gs_vista_departamentolz.sql)
+geoelectoral | geoelectoral | [geoelectoral-provincialz](bd/gs_vista_provincialz.sql)
+geoelectoral | geoelectoral | [geoelectoral-municipiolz](bd/gs_vista_municipiolz.sql)
+geoelectoral | geoelectoral | [geoelectoral-recinto](bd/gs_vista_recinto.sql)
+
+
 ## Prerequisitos
 
 La instalación y configuración se la realizó sobre el Sistema Operativo Debian Wheezy.
