@@ -1,6 +1,6 @@
 --
 -- Vista simplificada en GeoServer para mostrar Provincia
--- Nombre en GeoServer: geoelectoral-provincia
+-- Nombre en GeoServer: geoelectoral-provincialz
 SELECT
   dpa.id_dpa,
   dpa.id_tipo_dpa,

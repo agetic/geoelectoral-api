@@ -1,6 +1,6 @@
 --
 -- Vista simplificada en GeoServer para mostrar Departamentos
--- Nombre en Geoserver: geoelectoral-departamento
+-- Nombre en Geoserver: geoelectoral-departamentolz
 SELECT
   dpa.id_dpa,
   dpa.id_tipo_dpa,

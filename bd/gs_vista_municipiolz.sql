@@ -1,6 +1,6 @@
 --
 -- Vista simplificada en GeoServer para mostrar Municipio
--- Nombre en Geoserver: geoelectoral-municipio
+-- Nombre en Geoserver: geoelectoral-municipiolz
 SELECT
   dpa.id_dpa,
   dpa.id_tipo_dpa,
