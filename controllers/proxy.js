@@ -63,8 +63,8 @@ var dpa = function(req, res) {
       res.set('content-type', 'application/json; charset=UTF-8');
       if (body.indexOf('<?xml') !== -1) {
         res.json({error: "Error en el servidor de mapas"});
-      } else if(result.statusCode==404){
-        res.json({error: "404"});
+      } else if(result.statusCode!=200){
+        res.json({error: result.statusCode});
       } else {
         if(lzs) // enviar comprimido
           res.json({lz:lzString.compressToEncodedURIComponent(body)});

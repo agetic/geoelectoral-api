@@ -7,6 +7,8 @@ var router = express.Router();
 
 /* GET /api/v1/anios */
 router.get('/anios', elecciones.anios);
+/* GET /api/v1/anios */
+router.get('/anios2', elecciones.anios2);
 /* GET /api/v1/anios/eleccion */
 router.get('/anios/eleccion', elecciones.anios_eleccion);
 

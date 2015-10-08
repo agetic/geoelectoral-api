@@ -58,7 +58,6 @@ var api = function(req, res) {
     client.connect();
 
     query = parsing_url(req, res);
-    console.log(query);
     query = client.query(query.sql, query.params, function (err, result) {
       if (err) {
         console.error("Error ejecutando consulta: ", err);
@@ -212,6 +211,31 @@ var anios = function(req, res) {
   informacion_json(req, res);
 };
 
+/* GET /anios2 */
+var anios2 = function(req, res) {
+  // Información de las elecciones por año
+  var informacion_json = function(req, res) {
+    client = new pg.Client(config.app.db);
+    client.on('drain', client.end.bind(client)); //disconnect client when all queries are finished
+    client.connect();
+
+    query = "SELECT * FROM ws_anios_elecciones()";
+    query = client.query(query, function(err, result) {
+      res.set('content-type', 'application/json; charset=UTF-8');
+      if (err) {
+        console.error("Error ejecutando consulta: ", err);
+        res.json({"error": "Error en los parámetros"});
+      } else {
+        console.log("Elecciones info respuesta en formato JSON");
+        res.json(utils.array_anios2_json(result.rows));
+      }
+    });
+  }
+
+  // Enviar información de elecciones en formato JSON
+  informacion_json(req, res);
+};
+
 /* GET /anios/eleccion */
 var anios_eleccion = function(req, res) {
   // Información de las elecciones por año
@@ -283,5 +307,6 @@ var dpa = function(req, res) {
 exports.api = api;
 exports.info = info;
 exports.anios = anios;
+exports.anios2 = anios2;
 exports.anios_eleccion = anios_eleccion;
 exports.dpa = dpa;
