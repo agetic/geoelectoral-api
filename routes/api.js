@@ -14,6 +14,10 @@ router.get('/anios/eleccion', elecciones.anios_eleccion);
 
 /* GET /api/v1/elecciones */
 router.get('/elecciones', elecciones.api);
+
+/* GET /api/v1/elecciones2 */
+router.get('/elecciones2', elecciones.api2);
+
 router.get('/elecciones/dpa',elecciones.dpa);
 
 /* GET /api/v1/elecciones/:anio/info */
