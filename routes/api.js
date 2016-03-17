@@ -20,6 +20,8 @@ router.get('/elecciones2', elecciones.api2);
 
 router.get('/elecciones/dpa',elecciones.dpa);
 
+// router.get('/elecciones/fileCsv', elecciones.fileCsv);
+
 /* GET /api/v1/elecciones/:anio/info */
 router.get('/elecciones/:anio/info', elecciones.info);
 router.get('/elecciones/dpa', elecciones.dpa);
@@ -29,6 +31,9 @@ router.get('/proxy', proxy.dpa);
 
 /* GET /api/v1/dpa */
 router.get('/dpa', dpa.dpa);
+
+// router.get(static("/scripts/jobs.js"), )
+
 
 /* GET /api/v1/departamentos */
 

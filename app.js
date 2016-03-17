@@ -4,12 +4,20 @@ var favicon = require('static-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var schedule = require('node-schedule');
 
 var routes = require('./routes/index');
 var api = require('./routes/api');
 var grafica = require('./routes/grafica');
+var jobs = require('./public/scripts/jobs');
 
 var app = express();
+//Disparador de jobs
+var j = schedule.scheduleJob('*/1 * * * *', function(){
+  var now = Date.now();
+  //console.log('Voy a generar jobs!' +  new Date(now));
+  jobs.obtener_jobs();
+});
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -73,6 +81,9 @@ app.use(function(err, req, res, next) {
         error: {}
     });
 });
+
+
+
 
 
 module.exports = app;
