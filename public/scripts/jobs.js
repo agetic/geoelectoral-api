@@ -24,12 +24,12 @@ var obtener_jobs = function(){
         var objEleccion = objRow.id_eleccion;
         var objAno = objRow.ano;
         var now = moment();
+         generarArchivoCsv(objRow);
         console.log(objRow.periodo);
-        generarArchivoCsv(objRow);
-        //  if(objRow.periodo === now.format('HH:mm:ss')){
-        //    generarArchivoCsv(objRow); //Llama a generar los archivos de cada elección
-        //  }
-         //console.log("nada que ejecutar");
+         if(objRow.periodo === now.format('HH:mm:ss')){
+           generarArchivoCsv(objRow); //Llama a generar los archivos de cada elección
+         }
+         console.log("nada que ejecutar");
 
       }
     }
@@ -47,18 +47,19 @@ var generarArchivoCsv = function (objRow){
   client.on('drain', client.end.bind(client)); //disconnect client when all queries are finished
   client.connect();
   var crosstab = "crosstab_partidos_cols" + objRow.id_eleccion;
-  query = "Select parent.nombre as Pais, nomdep as Departamento, nomprov as Provincia, municipio as Municipio, recinto as Recinto, ct.* ";
-  query += "from " + crosstab + "(";
-  query += "'select id_dpa, partidos.sigla, resultado from resultados inner join partidos on resultados.id_partido = partidos.id_partido where id_eleccion = "+  objRow.id_eleccion +" order by 1, 2;') AS ct ";
-  query += "inner join tmp_recintosgeo on tmp_recintosgeo.recinto_dpa = ct.id_dpa ";
-  query += "inner join dpa on dpa.id_dpa = CAST(tmp_recintosgeo.dep AS integer) ";
-  query += "inner join dpa as parent on parent.id_dpa = dpa.id_dpa_superior "
-  query += "Order by tmp_recintosgeo.nomdep, tmp_recintosgeo.nomprov, tmp_recintosgeo.municipio, tmp_recintosgeo.recinto;";
-  console.log(query);
+  query_ant = "select test_crosstab_dynamics(" + objRow.id_eleccion + ")::text AS resultado";
+  console.log(query_ant);
+  var query_string = '';
+  query_ant = client.query(query_ant, function (err, result){
+    if(err)
+      console.log(err);
+    else {
+      query = result.rows[0].resultado;
+      console.log(query);
+    }
+  });
   query = client.query(query, function(err, result) {
     var nombreArchivo =  __dirname + '/elecciones_' +  objRow.ano + '.csv';
-    // /var nombreArchivo = public('/scripts/elecciones_' + objRow.ano + '.csv');
-    console.log("Nombre del archivo " + nombreArchivo);
     if (err) {  //Si existe un error en la consulta
       values = [objRow.id_job, 'Error al ejecutar la función crosstab', now];
       insertarJob(objRow, values);
@@ -84,10 +85,32 @@ var generarArchivoCsv = function (objRow){
       insertarJob(objRow, values);
     }
   });
-
-
 };
 
+var obtenerPartidos = function(objRow){
+  var arrayPartidos = []; var i = 0;
+  cliente = new pg.Client(config.app.db);
+  cliente.on('drain', cliente.end.bind(cliente)); //disconnect client when all queries are finished
+  cliente.connect();
+  query_partidos = 'SELECT DISTINCT partidos.sigla From Partidos inner join resultados on resultados.id_partido = partidos.id_partido where resultados.id_eleccion = ' + objRow.id_eleccion;
+  //client.end();
+  // query_partidos = cliente.query(query_partidos);
+  // console.log(query_partidos);
+  var query_partidos = cliente.query(query_partidos, function(err, result) {
+    console.log("push");
+    // for(var item in result.rows){
+    //   console.log("push");
+    //   arrayPartidos.push(result.rows[item]);
+    // }
+  });
+  console.log("return");
+  return arrayPartidos;
+  /*
+  ** function(int intRes, function(){return a}){
+    // do it something
+  }
+  */
+};
 
 var insertarJob = function (objRow, values){
   client = new pg.Client(config.app.db);
