@@ -1,9 +1,24 @@
 var json2csv = require('json2csv');
 var config = require('konfig')();
 var utils = require('../lib/utils');
+var csv_file = require('csv');
+var path = require('path');
+var mime = require('mime');
+
 var pg = require('pg')
   , client
   , query;
+
+  var csv_total_header = [
+    'departamento',
+    'provincia',
+    'municipio',
+    'recinto',
+    'sigla',
+    'resultado',
+    'latitud',
+    'longitud'
+    ];
 
 var csv_header = [
   'id_dpa',
@@ -31,10 +46,12 @@ var sql_params = {
   'id_partido': '_id_partido'
 };
 
+var anioActual = null;
 
 /* GET /elecciones?anio=2009&formato=json */
 var api = function(req, res) {
 
+  anioActual = req.query.anio;
   // Parsing URL
   var parsing_url = function(req, res) {
     var keys = Object.keys(sql_params);
@@ -51,7 +68,7 @@ var api = function(req, res) {
         + ")"
     };
   }
-  
+
   // La consulta SQL para elecciones de un determinado año
   var consulta_sql = function(req, res, callback) {
     client = new pg.Client(config.app.db);
@@ -164,7 +181,7 @@ var api = function(req, res) {
 
 /*
  * Funcion que retorna solo los datos complementarios tipo 2,3,4,5
- * 
+ *
  */
 var api2 = function(req, res) {
 
@@ -179,12 +196,12 @@ var api2 = function(req, res) {
     };
     return {
       params: keys.map(function(e) { return req.query[e]; }),
-      sql : "SELECT * FROM ws_elecciones2("   //aqui se llama al nuevo procedimiento almaenado creado en la base de datos 
+      sql : "SELECT * FROM ws_elecciones2("   //aqui se llama al nuevo procedimiento almaenado creado en la base de datos
         + keys.map(function(e, i) { return sql_params[e] + ':=$' + (i+1); }).join(',')
         + ")"
     };
   }
-  
+
   // La consulta SQL para elecciones de un determinado año
   var consulta_sql = function(req, res, callback) {
     client = new pg.Client(config.app.db);
@@ -395,6 +412,21 @@ var anios_eleccion = function(req, res) {
   informacion_json(req, res);
 };
 
+
+var archivoCsv = function(req, res){
+  console.log("descarga!");
+  var file = './public/scripts/elecciones_2016.csv';
+  var filename = path.basename(file);
+  var mimetype = mime.lookup(file);
+  res.setHeader('Content-disposition', 'attachment; filename=' + filename);
+  res.setHeader('Content-type', mimetype);
+  // var filestream = fs.createReadStream(file);
+  //   filestream.pipe(res);
+  //res.sendFile(file);
+  res.download(file);
+  res.end();
+};
+
 /* GET /elecciones/dpa?cod=010101&anio=2009&id_tipo_eleccion=1&id_tipo_dpa=4formato=json */
 var dpa = function(req, res) {
   // Información de las elecciones en el dpa
@@ -445,3 +477,4 @@ exports.anios = anios;
 exports.anios2 = anios2;
 exports.anios_eleccion = anios_eleccion;
 exports.dpa = dpa;
+exports.archivoCsv = archivoCsv;

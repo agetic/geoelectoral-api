@@ -4,7 +4,6 @@ var proxy = require('../controllers/proxy');
 var dpa = require('../controllers/dpa');
 
 var router = express.Router();
-
 /* GET /api/v1/anios */
 router.get('/anios', elecciones.anios);
 /* GET /api/v1/anios */
@@ -20,7 +19,7 @@ router.get('/elecciones2', elecciones.api2);
 
 router.get('/elecciones/dpa',elecciones.dpa);
 
-// router.get('/elecciones/fileCsv', elecciones.fileCsv);
+router.get('/elecciones/archivoCsv', elecciones.archivoCsv);
 
 /* GET /api/v1/elecciones/:anio/info */
 router.get('/elecciones/:anio/info', elecciones.info);
