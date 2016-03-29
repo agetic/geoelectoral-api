@@ -34,7 +34,7 @@ $ sudo su - geoelectoral
 Instalación de dependencias:
 
 ```
-$ sudo apt-get install postgresql-9.1 git gcc make libxml2-dev libxslt-dev g++ libpq-dev apache2 libapache2-mod-proxy-html
+$ sudo apt-get install postgresql-9.4 postgresql-contrib-9.4  postgresql-9.4-postgis git gcc make libxml2-dev libxslt-dev g++ libpq-dev apache2 libapache2-mod-proxy-html curl
 ```
 
 Instalar Node.js:
