@@ -9,13 +9,12 @@ var schedule = require('node-schedule');
 var routes = require('./routes/index');
 var api = require('./routes/api');
 var grafica = require('./routes/grafica');
-var jobs = require('./public/scripts/jobs');
+var jobs = require('./lib/jobs');
 
 var app = express();
-//Disparador de jobs
+//Disparador de jobs cada minuto
 var j = schedule.scheduleJob('*/1 * * * *', function(){
   var now = Date.now();
-  //console.log('Voy a generar jobs!' +  new Date(now));
   jobs.obtener_jobs();
 });
 
