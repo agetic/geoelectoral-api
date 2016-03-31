@@ -92,6 +92,7 @@ var api = function(req, res) {
         res.json({"error": "Error en los parámetros"});
       } else {
         console.log("Respuesta en formato JSON");
+        //console.log('req', req);
         res.json(utils.eleccion_dpas_json(result.rows));
       }
     });
@@ -414,17 +415,16 @@ var anios_eleccion = function(req, res) {
 
 
 var archivoCsv = function(req, res){
-  console.log("descarga!");
-  var file = './public/scripts/elecciones_2016.csv';
-  var filename = path.basename(file);
-  var mimetype = mime.lookup(file);
-  res.setHeader('Content-disposition', 'attachment; filename=' + filename);
-  res.setHeader('Content-type', mimetype);
+  var file = './public/elecciones_'+req.query.anio+'_'+req.query.idTipoEleccion+'.csv'; //archivo
+  // var filename = path.basename(file); //nombre del archivo (sin ruta)
+  // var mimetype = mime.lookup(file); // tipo de archivo
+  // res.setHeader('Content-disposition', 'attachment; filename=' + filename);
+  // res.setHeader('Content-type', mimetype);
   // var filestream = fs.createReadStream(file);
-  //   filestream.pipe(res);
+  // filestream.pipe(res);
   //res.sendFile(file);
-  res.download(file);
-  res.end();
+   res.download(file);
+  //res.end();
 };
 
 /* GET /elecciones/dpa?cod=010101&anio=2009&id_tipo_eleccion=1&id_tipo_dpa=4formato=json */
